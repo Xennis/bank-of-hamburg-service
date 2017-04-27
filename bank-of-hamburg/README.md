@@ -32,9 +32,9 @@ Model: [account.go](account.go)
 
 Request (1) all bank accounts, (2) a single account or (3) create a account.
 ```bash
-curl http://localhost:8080/accounts
-curl http://localhost:8080/accounts/2
-curl -H "Content-Type: application/json" -d '{"name":"Kat Müller"}' http://localhost:8080/accounts
+curl http://localhost:8080/api/accounts
+curl http://localhost:8080/api/accounts/2
+curl -H "Content-Type: application/json" -d '{"name":"Kat Müller"}' http://localhost:8080/api/accounts
 ```
 
 #### Transactions
@@ -43,13 +43,21 @@ Model: [transaction.go](transaction.go)
 
 Transfer the amount of 1000 units from account 1 to account 2
 ```bash
-curl -H "Content-Type: application/json" -d '{"from":1, "to": 2, "amount": 1000}' http://localhost:8080/transactions
+curl -H "Content-Type: application/json" -d '{"from":1, "to": 2, "amount": 1000}' http://localhost:8080/api/transactions
 ```
 
 (1) Pay in 50 units to account 1 or (2) pay it out 50 units from account 1
 ```bash
-curl -H "Content-Type: application/json" -d '{"to": 1, "amount": 50}' http://localhost:8080/transactions
-curl -H "Content-Type: application/json" -d '{"from": 1, "amount": 50}' http://localhost:8080/transactions
+curl -H "Content-Type: application/json" -d '{"to": 1, "amount": 50}' http://localhost:8080/api/transactions
+curl -H "Content-Type: application/json" -d '{"from": 1, "amount": 50}' http://localhost:8080/api/transactions
+```
+
+#### Service
+
+Liveness and readiness probes
+```bash
+curl -v http://localhost:8080/healthz
+curl -v http://localhost:8080/readiness
 ```
 
 ### Credits

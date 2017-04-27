@@ -11,29 +11,45 @@ type Route struct {
 
 type Routes []Route
 
+const (
+	api_prefix = "/api" // Adress of the service
+)
+
 var routes = Routes{
+    Route{
+        "LivenessProbe",
+        "GET",
+        "/healthz",
+        LivenessProbe,
+    },
+    Route{
+        "ReadinessProbe",
+        "GET",
+        "/readiness",
+        ReadinessProbe,
+    },
     Route{
         "AccountIndex",
         "GET",
-        "/accounts",
+        api_prefix + "/accounts",
         AccountIndex,
     },
     Route{
         "AccountCreate",
         "POST",
-        "/accounts",
+        api_prefix + "/accounts",
         AccountCreate,
     },
     Route{
         "AccountShow",
         "GET",
-        "/accounts/{accountId}",
+        api_prefix + "/accounts/{accountId}",
         AccountShow,
     },
     Route{
         "TransactionCreate",
         "POST",
-        "/transactions",
+        api_prefix + "/transactions",
         TransactionCreate,
     },
 }
