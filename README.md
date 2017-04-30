@@ -1,34 +1,29 @@
 ## Bank of Hamburg Service
 
-This is a simple service of a fake bank named Bank of Hamburg. You can create
-a bank account and pay money in our out.
+This is a simple service of a fake bank named Bank of Hamburg. You can create a bank account and pay money in our out.
 
-
-### Run
+## Go backend service
 
 #### Run locally
 
 Run the service
 ```bash
+cd go-backend-service
 go run *.go
 ```
 
-#### Run as Docker container
+#### Build and run Docker container
 
 Build the docker container and run the service
 ```bash
-docker build -t bank-of-hamburg .
-docker run --publish 6060:8080 --name bank-of-hamburg-test --rm bank-of-hamburg
+cd go-backend-service
+docker build -t bank-of-hamburg-backend
+docker run --publish 8080:8080 --name bank-of-hamburg-backend-test --rm bank-of-hamburg-backend
 ```
 
 ### API
 
-* Locally: http://localhost:8080
-* Docker: http://localhost:6060
-
 #### Accounts
-
-Model: [account.go](account.go)
 
 Request (1) all bank accounts, (2) a single account or (3) create a account.
 ```bash
@@ -38,8 +33,6 @@ curl -H "Content-Type: application/json" -d '{"name":"Kat Müller"}' http://loca
 ```
 
 #### Transactions
-
-Model: [transaction.go](transaction.go)
 
 Transfer the amount of 1000 units from account 1 to account 2
 ```bash
@@ -62,4 +55,4 @@ curl -v http://localhost:8080/readiness
 
 ### Credits
 
-Parts of the code based on the tutorial [Making a RESTful JSON API in Go](https://thenewstack.io/make-a-restful-json-api-go/) by Cory Lanou.
+* Go backend service: Initial service based on the idea of the tutorial [Making a RESTful JSON API in Go](https://thenewstack.io/make-a-restful-json-api-go/) by Cory Lanou.
