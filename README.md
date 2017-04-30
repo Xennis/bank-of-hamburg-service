@@ -56,3 +56,4 @@ curl -v http://localhost:8080/readiness
 ### Credits
 
 * Go backend service: Initial service based on the idea of the tutorial [Making a RESTful JSON API in Go](https://thenewstack.io/make-a-restful-json-api-go/) by Cory Lanou.
+* Redis setup: [Create a Guestbook with Redis and PHP](https://cloud.google.com/container-engine/docs/tutorials/guestbook) by Google Cloud Platform
