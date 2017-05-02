@@ -1,0 +1,13 @@
+type: google.api.Service
+config_version: 3
+
+name: bankofhamburg.endpoints.hacker-playground.cloud.goog
+
+title: Transaction gRPC API
+apis:
+- name: transactionapi.Transaction
+
+usage:
+  rules:
+  - selector: transactionapi.Transaction
+    allow_unregistered_calls: true

@@ -2,6 +2,7 @@
 
 This is a simple service of a fake bank named Bank of Hamburg. You can create a bank account and pay money in our out. The service consists of
 * [Account service written in Go](account-service/README.md)
+* [Transaction service written in Python](transaction-service/README.md)
 * Redis master for updates
 * Redis slave for search
 

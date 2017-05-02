@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package transactionapi;
+
+service Transaction {
+  rpc CreateTransaction (TransactionRequest) returns (TransactionReply) {}
+}
+
+message TransactionRequest {
+  string name = 1;
+}
+
+message TransactionReply {
+  string message = 1;
+}
