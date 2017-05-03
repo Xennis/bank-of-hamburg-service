@@ -1,19 +1,22 @@
 import argparse
 import grpc
 
-import transactionapi_pb2
-import transactionapi_pb2_grpc
+from transactionapi_pb2 import Transaction, TransactionRequest
+from transactionapi_pb2_grpc import TransactionApiStub
 
 
 def run(host, api_key=None):
     channel = grpc.insecure_channel(host)
-    stub = transactionapi_pb2_grpc.TransactionStub(channel)
+    stub = TransactionApiStub(channel)
     metadata = []
     if api_key:
         metadata.append(('x-api-key', api_key))
-    response = stub.CreateTransaction(transactionapi_pb2.TransactionRequest(name='you'), metadata=metadata)
-    print('Client received: ' + response.message)
 
+    response = stub.CreateTransaction(Transaction(id=1, name='Hello World'), metadata=metadata)
+    print('Client received: {}'.format(response.success))
+
+    response = stub.GetTransaction(TransactionRequest(id=1), metadata=metadata)
+    print('Client received: {}'.format(response))
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)

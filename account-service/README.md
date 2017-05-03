@@ -43,9 +43,10 @@ curl -H "Content-Type: application/json" -d '{"from": 1, "amount": 50}' http://l
 
 #### Service
 
-Liveness and readiness probes
 ```bash
+# Liveness probe
 curl -v http://localhost:8080/healthz
+# Readiness probe
 curl -v http://localhost:8080/readiness
 ```
 

@@ -2,14 +2,23 @@ syntax = "proto3";
 
 package transactionapi;
 
-service Transaction {
-  rpc CreateTransaction (TransactionRequest) returns (TransactionReply) {}
+service TransactionApi {
+  rpc CreateTransaction (Transaction) returns (TransactionReply) {}
+  rpc GetTransaction (TransactionRequest) returns (Transaction) {}
 }
 
-message TransactionRequest {
+message Transaction {
   string name = 1;
+  uint32 id = 2;
+  uint32 from = 3;
+  uint32 to = 4;
+  double amount = 5;
 }
 
 message TransactionReply {
-  string message = 1;
+  bool success = 1;
+}
+
+message TransactionRequest {
+  uint32 id = 1;
 }

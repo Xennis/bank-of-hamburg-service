@@ -25,7 +25,7 @@ python client.py
 ```bash
 # Generate Python files
 python -m grpc_tools.protoc -I protos --python_out=. --grpc_python_out=. protos/transactionapi.proto
-# Generate output file
+# Generate protocol buffer file
 python -m grpc_tools.protoc --include_imports --include_source_info -I protos protos/transactionapi.proto --descriptor_set_out out.pb
 ```
 

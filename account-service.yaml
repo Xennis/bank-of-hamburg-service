@@ -27,7 +27,7 @@ spec:
     spec:
       containers:
       - name: go-backend
-        image: gcr.io/hacker-playground/go-backend-service:latest
+        image: gcr.io/hacker-playground/account-service:latest
         resources:
           requests:
             cpu: 100m

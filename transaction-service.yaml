@@ -1,0 +1,40 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: transaction-service
+spec:
+  ports:
+  - port: 80
+    targetPort: 9000
+    protocol: TCP
+    name: http
+  selector:
+    app: transaction-service
+  type: LoadBalancer
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: transaction-service
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: transaction-service
+    spec:
+      containers:
+      - name: esp
+        image: gcr.io/endpoints-release/endpoints-runtime:1
+        args: [
+          "-P", "9000",
+          "-a", "grpc://127.0.0.1:50051",
+          "-s", "bankofhamburg.endpoints.hacker-playground.cloud.goog",
+          "-v", "2017-05-06r0",
+        ]
+        ports:
+          - containerPort: 9000
+      - name: python-transaction-service
+        image: gcr.io/hacker-playground/transaction-service:latest
+        ports:
+          - containerPort: 50051
