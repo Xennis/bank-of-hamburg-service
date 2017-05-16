@@ -1,12 +1,15 @@
 package main
 
 import (
+	"log"
 	"encoding/json"
 	"io"
 	"io/ioutil"
 	"net/http"
 	"strconv"
 	"github.com/gorilla/mux"
+	"golang.org/x/net/context"
+    "google.golang.org/grpc"
 )
 
 
@@ -14,6 +17,11 @@ const (
 	contentType = "Content-Type"
 	contentTypeJson = "application/json; charset=UTF-8"
 )
+
+type jsonErr struct {
+	Code int    `json:"code"`
+	Text string `json:"text"`
+}
 
 // Show all accounts (no pagination)
 func AccountIndex(w http.ResponseWriter, r *http.Request) {
@@ -99,11 +107,47 @@ func TransactionCreate(w http.ResponseWriter, r *http.Request) {
 
 	// TODO: Check from or to is valid
 	// TODO: Check amount is positive
+	t := DbCreateTransaction(transaction)
 
-	p := DbCreateTransaction(transaction)
+	// Create connection
+	conn, err := grpc.Dial(transactionApiAddr, grpc.WithInsecure())
+    if err != nil {
+        log.Fatalf("did not connect: %v", err)
+    }
+    defer conn.Close()
+    client := NewTransactionApiClient(conn)
+
+	// Use connection to create a transaction
+	response, err := client.CreateTransaction(context.Background(), &t)
+	if err != nil {
+		log.Fatalf("Could not create transaction: %v", err)
+	}
+	log.Printf("Receive: %t", response.Success)
+
 	w.Header().Set(contentType, contentTypeJson)
 	w.WriteHeader(http.StatusCreated)
-	if err := json.NewEncoder(w).Encode(p); err != nil {
+	if err := json.NewEncoder(w).Encode(t); err != nil {
 		panic(err)
 	}
+}
+
+func LivenessProbe(w http.ResponseWriter, r *http.Request) {
+	w.WriteHeader(http.StatusOK)
+}
+
+func ReadinessProbe(w http.ResponseWriter, r *http.Request) {
+    ok := true
+    errMsg := ""
+
+    // Check "database"
+    if err := len(accounts) < 1; err {
+        ok = false
+        errMsg += "Database not ok."
+	}
+
+    if ok {
+        w.WriteHeader(http.StatusOK)
+    } else {
+        http.Error(w, errMsg, http.StatusServiceUnavailable)
+    }
 }

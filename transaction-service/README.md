@@ -29,6 +29,12 @@ python -m grpc_tools.protoc -I protos --python_out=. --grpc_python_out=. protos/
 python -m grpc_tools.protoc --include_imports --include_source_info -I protos protos/transactionapi.proto --descriptor_set_out out.pb
 ```
 
+## API (gRPC)
+
+#### Transactions
+
+see [transactionapi.proto](protos/transactionapi.proto)
+
 ## Credits
 
 Bootstrapped with the tutorial [Endpoints Getting Started with gRPC & Python Quickstart](https://github.com/GoogleCloudPlatform/python-docs-samples/tree/master/endpoints/getting-started-grpc)

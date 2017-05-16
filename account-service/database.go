@@ -4,8 +4,7 @@ import "time"
 
 var accountCurrentId uint
 var accounts map[uint]Account
-var transactions Transactions
-var transactionCurrentId uint
+
 
 func init() {
 	accounts = make(map[uint]Account)
@@ -43,14 +42,11 @@ func DbUpdateAccount(id uint, cash float64) Account {
 }
 
 func DbCreateTransaction(t Transaction) Transaction {
-	t.Id = transactionCurrentId
 	if t.From > 0 {
-		DbUpdateAccount(t.From, -t.Amount)
+		DbUpdateAccount(uint(t.From), -t.Amount)
 	}
 	if t.To > 0 {
-		DbUpdateAccount(t.To, t.Amount)
+		DbUpdateAccount(uint(t.To), t.Amount)
 	}
-	t.Created = time.Now()
-	transactions = append(transactions, t)
 	return t
 }

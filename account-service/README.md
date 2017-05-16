@@ -17,7 +17,14 @@ docker build -t bank-of-hamburg-backend .
 docker run --publish 8080:8080 --name bank-of-hamburg-backend-test --rm bank-of-hamburg-backend
 ```
 
-### API
+## gRPC
+
+```bash
+# Generate Go file
+protoc -I protos --go_out=plugins=grpc:../account-service protos/transactionapi.proto
+```
+
+## API (REST)
 
 #### Accounts
 

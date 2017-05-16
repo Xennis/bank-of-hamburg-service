@@ -18,6 +18,7 @@ def run(host, api_key=None):
     response = stub.GetTransaction(TransactionRequest(id=1), metadata=metadata)
     print('Client received: {}'.format(response))
 
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument('--host', default='localhost:50051', help='The server host.')
