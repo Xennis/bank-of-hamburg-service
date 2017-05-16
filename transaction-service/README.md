@@ -10,9 +10,11 @@ Setup service
 pip install -r requirements.txt
 ```
 
-Run server
 ```bash
-python server.py
+# Start a redis server
+redis-server
+# Run server
+python server.py --redis-host localhost
 ```
 
 When running the client it should receive a message

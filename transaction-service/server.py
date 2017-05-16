@@ -1,3 +1,4 @@
+import argparse
 from concurrent import futures
 import time
 import grpc
@@ -12,8 +13,8 @@ _ONE_DAY_IN_SECONDS = 60 * 60 * 24
 
 class TransactionApi(transactionapi_pb2_grpc.TransactionApiServicer):
 
-    def __init__(self):
-        self.redis = redis.StrictRedis(host='redis-master', port=6379, db=0)
+    def __init__(self, host, port):
+        self.redis = redis.StrictRedis(host=host, port=port, db=0)
 
     def CreateTransaction(self, request, context):
         request_dict = protobuf_to_dict(request)
@@ -27,10 +28,10 @@ class TransactionApi(transactionapi_pb2_grpc.TransactionApiServicer):
         return transactionapi_pb2.Transaction(name=result['name'], id=int(result['id']))
 
 
-def serve():
+def serve(options):
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
-    transactionapi_pb2_grpc.add_TransactionApiServicer_to_server(TransactionApi(), server)
-    server.add_insecure_port('[::]:50051')
+    transactionapi_pb2_grpc.add_TransactionApiServicer_to_server(TransactionApi(host=options.redis_host, port=options.redis_port), server)
+    server.add_insecure_port(options.api_port)
     server.start()
 
     # gRPC starts a new thread to service requests. Just make the main thread
@@ -42,5 +43,14 @@ def serve():
         server.stop(grace=0)
 
 
+def parse_args():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--redis-host', default='redis-master', help='Redis host')
+    parser.add_argument('--redis-port', default=6379, help='Redis port', type=int)
+    parser.add_argument('--api-port', default='[::]:50051', help='Port of the gRPC api this service provides.')
+    return parser.parse_args()
+
+
 if __name__ == '__main__':
-    serve()
+    options = parse_args()
+    serve(options)
