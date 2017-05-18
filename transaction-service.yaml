@@ -30,7 +30,7 @@ spec:
           "-P", "9000",
           "-a", "grpc://127.0.0.1:50051",
           "-s", "bankofhamburg.endpoints.hacker-playground.cloud.goog",
-          "-v", "2017-05-06r0",
+          "-v", "2017-05-18r1",
         ]
         ports:
           - containerPort: 9000

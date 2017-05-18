@@ -7,7 +7,7 @@ title: Transaction gRPC API
 apis:
 - name: transactionapi.TransactionApi
 
-#usage:
-#  rules:
-#  - selector: transactionapi.TransactionApi
-#    allow_unregistered_calls: true
+usage:
+  rules:
+  - selector: "*"
+    allow_unregistered_calls: true
