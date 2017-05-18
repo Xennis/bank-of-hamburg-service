@@ -10,6 +10,7 @@ import (
 	"github.com/gorilla/mux"
 	"golang.org/x/net/context"
     "google.golang.org/grpc"
+    "google.golang.org/grpc/metadata"
 )
 
 
@@ -110,15 +111,18 @@ func TransactionCreate(w http.ResponseWriter, r *http.Request) {
 	t := DbCreateTransaction(transaction)
 
 	// Create connection
-	conn, err := grpc.Dial(transactionApiAddr, grpc.WithInsecure())
+	conn, err := grpc.Dial(*transactionServiceAddr, grpc.WithInsecure())
     if err != nil {
         log.Fatalf("did not connect: %v", err)
     }
     defer conn.Close()
     client := NewTransactionApiClient(conn)
 
+    ctx := context.Background()
+	ctx = metadata.NewContext(ctx, metadata.Pairs("x-api-key", *transactionServiceKey))
+
 	// Use connection to create a transaction
-	response, err := client.CreateTransaction(context.Background(), &t)
+	response, err := client.CreateTransaction(ctx, &t)
 	if err != nil {
 		log.Fatalf("Could not create transaction: %v", err)
 	}

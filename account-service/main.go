@@ -2,6 +2,7 @@ package main
 
 import (
     "log"
+    "flag"
     "net/http"
 
 
@@ -9,11 +10,17 @@ import (
 
 const (
 	addr = ":8080" // own rest service
-    transactionApiAddr = "localhost:50051" // grpc api of the transaction service
+)
+
+var (
+	transactionServiceAddr = flag.String("addr", "transaction-service:80", "Address of transaction service")
+	transactionServiceKey  = flag.String("api-key", "", "API key.")
 )
 
 
 func main() {
+    flag.Parse()
+
     router := NewRouter()
     log.Fatal(http.ListenAndServe(addr, router))
 }
